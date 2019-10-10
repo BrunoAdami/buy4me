@@ -1,4 +1,8 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## buy4me-front
+
+Front end do projeto buy4me, desenvolvido pelos alunos Bruno Adami e Matheus Gomes para a disciplina Laboratório de Engenharia de Software.
+
+## Instruções para execução do front-end (em inglês)
 
 ## Available Scripts
 

@@ -4,6 +4,7 @@ import './App.css';
 import Header from './components/molecules/header';
 import Footer from './components/molecules/footer';
 import GPaper from './components/atoms/gpaper';
+import Wellcome from './components/atoms/wellcome';
 
 function App() {
   return (

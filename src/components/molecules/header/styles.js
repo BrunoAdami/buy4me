@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { style } from 'styled-components';
+import AppBar from '@material-ui/core/AppBar';
+import styled from 'styled-components';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -12,3 +13,11 @@ export const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
 }));
+
+export const BlueAppBar = styled(AppBar)`
+  background-color: #0096d4 !important;
+`;
+
+export const Logo = styled.img`
+  height: 6vh;
+`;

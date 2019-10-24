@@ -1,27 +1,12 @@
 import React from 'react';
 import './App.css';
 //import Home from './home';
-import Header from './components/molecules/header';
-import Footer from './components/molecules/footer';
-import GPaper from './components/atoms/gpaper';
-import Wellcome from './components/atoms/wellcome';
-import GButton from './components/atoms/button';
+import Buyer from './buyer';
 
 function App() {
   return (
     <div className="App">
-      {/* <Home /> */}
-      <Header userName="PAULA" />
-      <GPaper>
-        <GButton text="blue" type="blue" />
-
-        <GButton text="purple" type="purple" />
-
-        <GButton text="orange" type="orange" />
-
-        <GButton text="red" type="red" />
-      </GPaper>
-      <Footer />
+      <Buyer gender="female" name="PAULA" />
     </div>
   );
 }

@@ -1,5 +1,19 @@
 import React from 'react';
-import { Grid, Button, Stepper, Step, StepLabel, TextField, Fab, CircularProgress } from '@material-ui/core';
+import {
+  Grid,
+  Button,
+  Stepper,
+  Step,
+  StepLabel,
+  TextField,
+  Fab,
+  CircularProgress,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Footer from '../components/molecules/footer';
 import Header from '../components/molecules/header';
@@ -76,6 +90,14 @@ class Buyer extends React.Component {
     this.setState(prevState => ({ screenStep: 0, stepperStep: 0, itens: [], inputValue: '' }));
   };
 
+  handleListView = () => {
+    this.setState(prevState => ({ ...prevState, screenStep: 5 }));
+  };
+
+  handleGoBackToCreateList = () => {
+    this.setState(prevState => ({ ...prevState, screenStep: 1 }));
+  };
+
   renderAddItensScreen = () => {
     return (
       <React.Fragment>
@@ -98,7 +120,7 @@ class Buyer extends React.Component {
         </Grid>
         <Grid item>Itens adicionados: {this.state.itens.length}</Grid>
         <Grid item>
-          <GButton type="orange" size="large" onClick={() => console.log('click')} text="VER LISTA" />
+          <GButton type="orange" size="large" onClick={this.handleListView} text="VER LISTA" />
         </Grid>
       </React.Fragment>
     );
@@ -291,6 +313,43 @@ class Buyer extends React.Component {
               </Grid>
               <Grid item>
                 <GButton type="blue" size="large" onClick={this.handleCancel} text="VOLTAR" />
+              </Grid>
+            </Grid>
+          </GPaper>
+          <Footer />
+        </React.Fragment>
+      );
+    } else if (this.state.screenStep === 5) {
+      const createData = (item, quantity) => ({ item, quantity });
+      const rows = this.state.itens.map(item => createData(item, 1));
+
+      return (
+        <React.Fragment>
+          <Header name={this.props.name} />
+          <GPaper>
+            <Grid container spacing={4} direction="column" justify="center" alignItems="center">
+              <Grid item>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Item</TableCell>
+                      <TableCell align="right">Quantidade</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map(row => (
+                      <TableRow>
+                        <TableCell component="th" scope="row">
+                          {row.item}
+                        </TableCell>
+                        <TableCell align="right">{row.quantity}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Grid>
+              <Grid item>
+                <GButton type="blue" size="large" onClick={this.handleGoBackToCreateList} text="VOLTAR" />
               </Grid>
             </Grid>
           </GPaper>

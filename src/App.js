@@ -7,8 +7,8 @@ import DeliverNotFound from './buyer/screens/deliverNotFound';
 function App() {
   return (
     <div className="App">
-      {/* <Buyer gender="female" name="PAULA" /> */}
-      <DeliverNotFound name="PAULA" />
+      <Buyer gender="female" name="PAULA" />
+      {/* <DeliverNotFound name="PAULA" /> */}
     </div>
   );
 }

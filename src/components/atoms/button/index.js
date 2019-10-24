@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import React from 'react';
 import { BlueButton, PurpleButton, OrangeButton, RedButton } from './styles';
-
+import { Button } from '@material-ui/core';
 const GButton = props => {
   const { type } = props;
   switch (type) {
@@ -28,6 +28,12 @@ const GButton = props => {
         <RedButton {...props} variant="contained">
           {props.text}
         </RedButton>
+      );
+    default:
+      return (
+        <Button {...props} variant="contained">
+          {props.text}
+        </Button>
       );
   }
 };

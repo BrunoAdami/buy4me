@@ -277,7 +277,7 @@ class Buyer extends React.Component {
               </Grid>
               <Grid item>
                 <p>
-                  <strong>Data:</strong> 24/05/2019
+                  <strong>Data:</strong> 04/11/2019
                 </p>
                 <p>
                   <strong>Horário:</strong> 10h - 12h

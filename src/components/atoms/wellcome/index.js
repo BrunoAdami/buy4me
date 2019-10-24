@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 
 const Wellcome = props => {
   if (props.gender === 'male') {
-    return <WellcomeDiv>BEM-VINDO {props.name}</WellcomeDiv>;
+    return <WellcomeDiv>BEM-VINDO, {props.name}</WellcomeDiv>;
   }
-  return <WellcomeDiv>BEM-VINDA {props.name}</WellcomeDiv>;
+  return <WellcomeDiv>BEM-VINDA, {props.name}</WellcomeDiv>;
 };
 export default Wellcome;
 

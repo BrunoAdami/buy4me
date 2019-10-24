@@ -13,6 +13,8 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  TableFooter,
+  TablePagination,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Footer from '../components/molecules/footer';
@@ -233,7 +235,7 @@ class Buyer extends React.Component {
               <Grid item>
                 <CircularProgress />
               </Grid>
-              <Grid item>Buscando por entregadores próximos a vocês...</Grid>
+              <Grid item>Buscando por entregadores próximos a você...</Grid>
               <Grid item>
                 <GButton type="red" size="large" onClick={this.handleCancel} text="CANCELAR" />
               </Grid>
@@ -329,7 +331,7 @@ class Buyer extends React.Component {
           <GPaper>
             <Grid container spacing={4} direction="column" justify="center" alignItems="center">
               <Grid item>
-                <Table aria-label="simple table">
+                <Table stickyHeader aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Item</TableCell>
@@ -346,6 +348,7 @@ class Buyer extends React.Component {
                       </TableRow>
                     ))}
                   </TableBody>
+                  <TableFooter />
                 </Table>
               </Grid>
               <Grid item>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Button, Stepper, Step, StepLabel, TextField, Fab } from '@material-ui/core';
+import { Grid, Button, Stepper, Step, StepLabel, TextField, Fab, CircularProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Footer from '../components/molecules/footer';
 import Header from '../components/molecules/header';
@@ -30,11 +30,17 @@ class Buyer extends React.Component {
   };
 
   handleNextStepButton = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      screenStep: prevState.screenStep + 1,
-    }));
-    console.log(this.state);
+    this.setState(prevState => {
+      if (prevState.stepperStep === 2)
+        setTimeout(() => {
+          this.handleNextStepper();
+          this.handleNextStepButton();
+        }, 4000);
+      return {
+        ...prevState,
+        screenStep: prevState.screenStep + 1,
+      };
+    });
   };
 
   handleNextStepper = () => {
@@ -64,6 +70,10 @@ class Buyer extends React.Component {
       ...prevState,
       itens: [...prevState.itens, this.state.inputValue],
     }));
+  };
+
+  handleCancel = () => {
+    this.setState(prevState => ({ screenStep: 0, stepperStep: 0, itens: [], inputValue: '' }));
   };
 
   renderAddItensScreen = () => {
@@ -189,10 +199,101 @@ class Buyer extends React.Component {
         </React.Fragment>
       );
     } else if (this.state.screenStep === 2) {
+      //Searching Screen
       return (
         <React.Fragment>
           <Header name={this.props.name} />
-          <GPaper>PAGINA AINDA NAO IMPLEMENTADA</GPaper>
+          <GPaper>
+            <Grid container spacing={4} direction="column" justify="center" alignItems="center">
+              <Grid style={{ marginTop: '6em' }} item>
+                <strong>BUSCANDO ENTREGADOR...</strong>
+              </Grid>
+              <Grid item>
+                <CircularProgress />
+              </Grid>
+              <Grid item>Buscando por entregadores próximos a vocês...</Grid>
+              <Grid item>
+                <GButton type="red" size="large" onClick={this.handleCancel} text="CANCELAR" />
+              </Grid>
+            </Grid>
+          </GPaper>
+          <Footer />
+        </React.Fragment>
+      );
+    } else if (this.state.screenStep === 3) {
+      // Found deliver screen
+      return (
+        <React.Fragment>
+          <Header name={this.props.name} />
+          <GPaper>
+            <Grid container spacing={4} direction="column" justify="center" alignItems="center">
+              <Grid item style={{ marginTop: '5em' }}>
+                <strong>ENTREGADOR ENCONTRADO!</strong>
+              </Grid>
+              <Grid item>
+                <p>
+                  <strong>Nome:</strong> Paulo Henrique
+                </p>
+                <p>
+                  <strong>Veículo:</strong> Carro
+                </p>
+                <p>
+                  <strong>Modelo:</strong> Civic
+                </p>
+                <p>
+                  <strong>Placa:</strong> DWE-0234
+                </p>
+              </Grid>
+              <Grid item>
+                <Grid container justify="space-between" alignItems="flex-end" style={{ marginBottom: '10px' }}>
+                  <Grid item>
+                    <GButton
+                      type="red"
+                      size="large"
+                      onClick={this.handleCancel}
+                      text="CANCELAR"
+                      style={{ marginRight: '1em' }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <GButton type="orange" size="large" onClick={this.handleNextStepButton} text="FINALIZAR" />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </GPaper>
+          <Footer />
+        </React.Fragment>
+      );
+    } else if (this.state.screenStep === 4) {
+      //deliver stored
+      return (
+        <React.Fragment>
+          <Header name={this.props.name} />
+          <GPaper>
+            <Grid container spacing={4} direction="column" justify="center" alignItems="center">
+              <Grid item style={{ marginTop: '5em' }}>
+                <strong>ENTREGA AGENDADA!</strong>
+              </Grid>
+              <Grid item>
+                <p>
+                  <strong>Data:</strong> 24/05/2019
+                </p>
+                <p>
+                  <strong>Horário:</strong> 10h - 12h
+                </p>
+                <p>
+                  <strong>Entregador:</strong> Paulo Henrique
+                </p>
+                <p>
+                  <strong>Placa:</strong> DWE-0234
+                </p>
+              </Grid>
+              <Grid item>
+                <GButton type="blue" size="large" onClick={this.handleCancel} text="VOLTAR" />
+              </Grid>
+            </Grid>
+          </GPaper>
           <Footer />
         </React.Fragment>
       );

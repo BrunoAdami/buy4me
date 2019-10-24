@@ -27,7 +27,7 @@ export default function Header(props) {
             </Grid>
             <Grid item>
               <Typography variant="h6" className={classes.title}>
-                {props.userName}
+                {props.name}
               </Typography>
             </Grid>
           </Grid>

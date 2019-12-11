@@ -36,10 +36,10 @@ class Buyer extends React.Component {
       items: [],
       selectedDate: '',
       inputValue: '',
-      deliverName: 'Nome de teste',
-      deliverVehiclePlate: 'PLACA-TEST',
-      deliverVehicleType: 'Carro teste',
-      deliverVehicleModel: 'Modelo teste',
+      deliverName: '',
+      deliverVehiclePlate: '',
+      deliverVehicleType: '',
+      deliverVehicleModel: '',
       dbItems: [],
     };
   }
@@ -94,6 +94,32 @@ class Buyer extends React.Component {
           this.handleNextStepper();
           this.handleNextStepButton();
         }, 4000);
+      return {
+        ...prevState,
+        screenStep: prevState.screenStep + 1,
+      };
+    });
+  };
+
+  handleRequestConfirmation = () => {
+    axios.get(`${url_base}available-deliver`).then(result => {
+      console.log(result.data);
+      const { data } = result;
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          deliverName: data.name,
+          deliverVehiclePlate: data.vehicle_plate,
+          deliverVehicleType: data.vehicle_type,
+          deliverVehicleModel: data.vehicle_brand,
+        };
+      });
+    });
+    this.setState(prevState => {
+      setTimeout(() => {
+        this.handleNextStepper();
+        this.handleNextStepButton();
+      }, 4000);
       return {
         ...prevState,
         screenStep: prevState.screenStep + 1,
@@ -334,7 +360,7 @@ class Buyer extends React.Component {
                       <GButton type="purple" size="large" onClick={this.handleNextStepper} text="CONTINUAR" />
                     )}
                     {this.state.stepperStep >= 2 && (
-                      <GButton type="purple" size="large" onClick={this.handleNextStepButton} text="CONFIRMAR" />
+                      <GButton type="purple" size="large" onClick={this.handleRequestConfirmation} text="CONFIRMAR" />
                     )}
                   </Grid>
                 </Grid>

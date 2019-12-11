@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const WellcomeDiv = styled.div`
-  font-family: Roboto Condensed;
+  font-family: roboto;
   font-style: normal;
   font-weight: bold;
   font-size: 27px;

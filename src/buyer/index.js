@@ -15,6 +15,7 @@ import {
   TableBody,
   TableFooter,
   TablePagination,
+  MenuItem,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Footer from '../components/molecules/footer';
@@ -27,10 +28,70 @@ import PropTypes from 'prop-types';
 class Buyer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { screenStep: 0, stepperStep: 0, itens: [], inputValue: '' };
+    this.state = {
+      screenStep: 0,
+      stepperStep: 0,
+      items: [],
+      inputValue: '',
+      testItems: [
+        {
+          value: 'banana 1',
+          name: 'banana 1',
+          price: 12,
+        },
+        {
+          value: 'banana 2',
+          name: 'banana 2',
+          price: 12,
+        },
+        {
+          value: 'banana 3',
+          name: 'banana 3',
+          price: 12,
+        },
+        {
+          value: 'banana 4',
+          name: 'banana 4',
+          price: 12,
+        },
+        {
+          value: 'banana 5',
+          name: 'banana 5',
+          price: 12,
+        },
+      ],
+    };
   }
 
   getSteps = () => ['Lista', 'Agendamento', 'Confirmação'];
+
+  // getTestItems = () => [
+  //   {
+  //     value: 'banana 1',
+  //     name: 'banana 1',
+  //     price: 12,
+  //   },
+  //   {
+  //     value: 'banana 2',
+  //     name: 'banana 2',
+  //     price: 12,
+  //   },
+  //   {
+  //     value: 'banana 3',
+  //     name: 'banana 3',
+  //     price: 12,
+  //   },
+  //   {
+  //     value: 'banana 4',
+  //     name: 'banana 4',
+  //     price: 12,
+  //   },
+  //   {
+  //     value: 'banana 5',
+  //     name: 'banana 5',
+  //     price: 12,
+  //   },
+  // ];
 
   getStepContent = stepIndex => {
     switch (stepIndex) {
@@ -84,12 +145,12 @@ class Buyer extends React.Component {
   handleAddItem = () => {
     this.setState(prevState => ({
       ...prevState,
-      itens: [...prevState.itens, this.state.inputValue],
+      items: [...prevState.items, this.state.inputValue],
     }));
   };
 
   handleCancel = () => {
-    this.setState(prevState => ({ screenStep: 0, stepperStep: 0, itens: [], inputValue: '' }));
+    this.setState(prevState => ({ screenStep: 0, stepperStep: 0, items: [], inputValue: '' }));
   };
 
   handleListView = () => {
@@ -100,7 +161,7 @@ class Buyer extends React.Component {
     this.setState(prevState => ({ ...prevState, screenStep: 1 }));
   };
 
-  renderAddItensScreen = () => {
+  renderAdditemsScreen = () => {
     return (
       <React.Fragment>
         <Grid item>
@@ -112,7 +173,12 @@ class Buyer extends React.Component {
                 label="Item"
                 onChange={this.handleInputChange}
                 select
-              />
+                value={this.state.inputValue}
+              >
+                {this.state.testItems.map(item => (
+                  <MenuItem value={item.value}>{item.name}</MenuItem>
+                ))}
+              </TextField>
             </Grid>
             <Grid item xs={3}>
               <Fab color="secondary" style={{ marginTop: '-21px' }} onClick={this.handleAddItem}>
@@ -121,7 +187,7 @@ class Buyer extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>Itens adicionados: {this.state.itens.length}</Grid>
+        <Grid item>Itens adicionados: {this.state.items.length}</Grid>
         <Grid item>
           <GButton type="orange" size="large" onClick={this.handleListView} text="VER LISTA" />
         </Grid>
@@ -139,12 +205,12 @@ class Buyer extends React.Component {
     );
   };
 
-  renderConfirmationScreen = (itensValue, shippingValue) => (
+  renderConfirmationScreen = (itemsValue, shippingValue) => (
     <React.Fragment>
-      <Grid item>Compra: R$ {itensValue}</Grid>
+      <Grid item>Compra: R$ {itemsValue}</Grid>
       <Grid item>Entrega: R$ {shippingValue}</Grid>
       <Grid item>
-        <strong>TOTAL: R$ {itensValue + shippingValue}</strong>
+        <strong>TOTAL: R$ {itemsValue + shippingValue}</strong>
       </Grid>
     </React.Fragment>
   );
@@ -190,7 +256,7 @@ class Buyer extends React.Component {
                   ))}
                 </Stepper>
               </Grid>
-              {this.state.stepperStep === 0 && this.renderAddItensScreen()}
+              {this.state.stepperStep === 0 && this.renderAdditemsScreen()}
               {this.state.stepperStep === 1 && this.renderDateSelectionScreen()}
               {/* a data ainda não está sendo armazenada no estado */}
               {this.state.stepperStep === 2 && this.renderConfirmationScreen(120.44, 32.2)}
@@ -324,7 +390,7 @@ class Buyer extends React.Component {
       );
     } else if (this.state.screenStep === 5) {
       const createData = (item, quantity) => ({ item, quantity });
-      const rows = this.state.itens.map(item => createData(item, 1));
+      const rows = this.state.items.map(item => createData(item, 1));
 
       return (
         <React.Fragment>

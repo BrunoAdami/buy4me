@@ -32,6 +32,7 @@ class Buyer extends React.Component {
       screenStep: 0,
       stepperStep: 0,
       items: [],
+      selectedDate: '',
       inputValue: '',
       dbItems: [
         {
@@ -142,6 +143,14 @@ class Buyer extends React.Component {
     }));
   };
 
+  handleDateChange = event => {
+    const { value } = event.target;
+    this.setState(prevState => ({
+      ...prevState,
+      selectedDate: value,
+    }));
+  };
+
   handleAddItem = () => {
     const hasEqual = this.state.items.find(item => item.name === this.state.inputValue);
     if (hasEqual) {
@@ -211,7 +220,7 @@ class Buyer extends React.Component {
     return (
       <React.Fragment>
         <Grid item>
-          <TextField type="datetime-local" />
+          <TextField type="datetime-local" onChange={this.handleDateChange} />
         </Grid>
       </React.Fragment>
     );

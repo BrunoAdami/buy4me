@@ -33,7 +33,7 @@ class Buyer extends React.Component {
       stepperStep: 0,
       items: [],
       inputValue: '',
-      testItems: [
+      dbItems: [
         {
           value: 'banana 1',
           name: 'banana 1',
@@ -65,7 +65,7 @@ class Buyer extends React.Component {
 
   getSteps = () => ['Lista', 'Agendamento', 'Confirmação'];
 
-  // getTestItems = () => [
+  // getdbItems = () => [
   //   {
   //     value: 'banana 1',
   //     name: 'banana 1',
@@ -143,10 +143,22 @@ class Buyer extends React.Component {
   };
 
   handleAddItem = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      items: [...prevState.items, this.state.inputValue],
-    }));
+    const hasEqual = this.state.items.find(item => item.name === this.state.inputValue);
+    if (hasEqual) {
+      this.setState(prevState => ({
+        ...prevState,
+        items: prevState.items.map(item => {
+          if (item.name === this.state.inputValue) return { ...item, quantity: item.quantity + 1 };
+          else return item;
+        }),
+      }));
+    } else {
+      const selectedItem = this.state.dbItems.find(item => item.name === this.state.inputValue);
+      this.setState(prevState => ({
+        ...prevState,
+        items: [...prevState.items, { name: selectedItem.name, price: selectedItem.price, quantity: 1 }],
+      }));
+    }
   };
 
   handleCancel = () => {
@@ -175,7 +187,7 @@ class Buyer extends React.Component {
                 select
                 value={this.state.inputValue}
               >
-                {this.state.testItems.map(item => (
+                {this.state.dbItems.map(item => (
                   <MenuItem value={item.value}>{item.name}</MenuItem>
                 ))}
               </TextField>
@@ -187,7 +199,7 @@ class Buyer extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>Itens adicionados: {this.state.items.length}</Grid>
+        <Grid item>Itens adicionados: {this.state.items.reduce((prev, curr) => prev + curr.quantity, 0)}</Grid>
         <Grid item>
           <GButton type="orange" size="large" onClick={this.handleListView} text="VER LISTA" />
         </Grid>
@@ -389,8 +401,7 @@ class Buyer extends React.Component {
         </React.Fragment>
       );
     } else if (this.state.screenStep === 5) {
-      const createData = (item, quantity) => ({ item, quantity });
-      const rows = this.state.items.map(item => createData(item, 1));
+      const rows = this.state.items;
 
       return (
         <React.Fragment>
@@ -402,6 +413,7 @@ class Buyer extends React.Component {
                   <TableHead>
                     <TableRow>
                       <TableCell>Item</TableCell>
+                      <TableCell>Preço</TableCell>
                       <TableCell align="right">Quantidade</TableCell>
                     </TableRow>
                   </TableHead>
@@ -409,7 +421,10 @@ class Buyer extends React.Component {
                     {rows.map(row => (
                       <TableRow>
                         <TableCell component="th" scope="row">
-                          {row.item}
+                          {row.name}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          {row.price}
                         </TableCell>
                         <TableCell align="right">{row.quantity}</TableCell>
                       </TableRow>

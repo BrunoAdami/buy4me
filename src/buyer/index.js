@@ -104,16 +104,17 @@ class Buyer extends React.Component {
     return (
       <React.Fragment>
         <Grid item>
-          <Grid container spacing={2}>
-            <Grid item>
+          <Grid container spacing={2} justify="flex-start">
+            <Grid item xs={9}>
               <TextField
-                style={{ marginTop: '-20px', marginLeft: '1em' }}
+                style={{ marginTop: '-20px', marginLeft: '1em', width: '12em' }}
                 variant="outlined"
                 label="Item"
                 onChange={this.handleInputChange}
+                select
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={3}>
               <Fab color="secondary" style={{ marginTop: '-21px' }} onClick={this.handleAddItem}>
                 <AddIcon />
               </Fab>

@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {
   Grid,
   Button,
@@ -25,6 +26,7 @@ import Wellcome from '../components/atoms/wellcome';
 import GButton from '../components/atoms/button';
 import PropTypes from 'prop-types';
 
+const url_base = 'http://127.0.0.1:5000/';
 class Buyer extends React.Component {
   constructor(props) {
     super(props);
@@ -38,33 +40,7 @@ class Buyer extends React.Component {
       deliverVehiclePlate: 'PLACA-TEST',
       deliverVehicleType: 'Carro teste',
       deliverVehicleModel: 'Modelo teste',
-      dbItems: [
-        {
-          value: 'banana 1',
-          name: 'banana 1',
-          price: 12.3,
-        },
-        {
-          value: 'banana 2',
-          name: 'banana 2',
-          price: 12.4,
-        },
-        {
-          value: 'banana 3',
-          name: 'banana 3',
-          price: 12.5,
-        },
-        {
-          value: 'banana 4',
-          name: 'banana 4',
-          price: 12.67,
-        },
-        {
-          value: 'banana 5',
-          name: 'banana 5',
-          price: 12.456,
-        },
-      ],
+      dbItems: [],
     };
   }
 
@@ -123,6 +99,25 @@ class Buyer extends React.Component {
         screenStep: prevState.screenStep + 1,
       };
     });
+  };
+
+  handleRequestDeliveryButton = () => {
+    axios
+      .get(`${url_base}items`)
+      .then(result => {
+        console.log(result.data);
+        this.setState(prevState => {
+          return {
+            ...prevState,
+            dbItems: result.data.map(item => ({ name: item.name, value: item.name, price: item.price })),
+          };
+        });
+      })
+      .catch(error => console.log(error));
+    this.setState(prevState => ({
+      ...prevState,
+      screenStep: prevState.screenStep + 1,
+    }));
   };
 
   handleNextStepper = () => {
@@ -186,33 +181,7 @@ class Buyer extends React.Component {
       deliverVehiclePlate: 'PLACA-TEST',
       deliverVehicleType: 'Carro teste',
       deliverVehicleModel: 'Modelo teste',
-      dbItems: [
-        {
-          value: 'banana 1',
-          name: 'banana 1',
-          price: 12.3,
-        },
-        {
-          value: 'banana 2',
-          name: 'banana 2',
-          price: 12.4,
-        },
-        {
-          value: 'banana 3',
-          name: 'banana 3',
-          price: 12.5,
-        },
-        {
-          value: 'banana 4',
-          name: 'banana 4',
-          price: 12.67,
-        },
-        {
-          value: 'banana 5',
-          name: 'banana 5',
-          price: 12.456,
-        },
-      ],
+      dbItems: [],
     }));
   };
 
@@ -283,6 +252,16 @@ class Buyer extends React.Component {
     </React.Fragment>
   );
 
+  renderLoading = () => (
+    <React.Fragment>
+      <Grid container direction="column" justify="center">
+        <Grid item>
+          <CircularProgress />
+        </Grid>
+      </Grid>
+    </React.Fragment>
+  );
+
   render() {
     if (this.state.screenStep === 0) {
       return (
@@ -301,7 +280,12 @@ class Buyer extends React.Component {
                 <Wellcome name={this.props.name} gender={this.props.gender} />
               </Grid>
               <Grid item>
-                <GButton type="purple" size="large" onClick={this.handleNextStepButton} text="SOLICITAR ENTREGA" />
+                <GButton
+                  type="purple"
+                  size="large"
+                  onClick={this.handleRequestDeliveryButton}
+                  text="SOLICITAR ENTREGA"
+                />
               </Grid>
             </Grid>
           </GPaper>
@@ -326,7 +310,8 @@ class Buyer extends React.Component {
                   ))}
                 </Stepper>
               </Grid>
-              {this.state.stepperStep === 0 && this.renderAdditemsScreen()}
+              {this.state.stepperStep === 0 && this.state.dbItems.length >= 1 && this.renderAdditemsScreen()}
+              {this.state.stepperStep === 0 && !(this.state.dbItems.length >= 1) && this.renderLoading()}
               {this.state.stepperStep === 1 && this.renderDateSelectionScreen()}
               {/* a data ainda não está sendo armazenada no estado */}
               {this.state.stepperStep === 2 && this.renderConfirmationScreen(purchasePrice, deliveryPrice)}

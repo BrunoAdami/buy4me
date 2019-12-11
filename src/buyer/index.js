@@ -34,6 +34,10 @@ class Buyer extends React.Component {
       items: [],
       selectedDate: '',
       inputValue: '',
+      deliverName: 'Nome de teste',
+      deliverVehiclePlate: 'PLACA-TEST',
+      deliverVehicleType: 'Carro teste',
+      deliverVehicleModel: 'Modelo teste',
       dbItems: [
         {
           value: 'banana 1',
@@ -172,7 +176,44 @@ class Buyer extends React.Component {
   };
 
   handleCancel = () => {
-    this.setState(prevState => ({ screenStep: 0, stepperStep: 0, items: [], inputValue: '' }));
+    this.setState(prevState => ({
+      screenStep: 0,
+      stepperStep: 0,
+      items: [],
+      selectedDate: '',
+      inputValue: '',
+      deliverName: 'Nome de teste',
+      deliverVehiclePlate: 'PLACA-TEST',
+      deliverVehicleType: 'Carro teste',
+      deliverVehicleModel: 'Modelo teste',
+      dbItems: [
+        {
+          value: 'banana 1',
+          name: 'banana 1',
+          price: 12.3,
+        },
+        {
+          value: 'banana 2',
+          name: 'banana 2',
+          price: 12.4,
+        },
+        {
+          value: 'banana 3',
+          name: 'banana 3',
+          price: 12.5,
+        },
+        {
+          value: 'banana 4',
+          name: 'banana 4',
+          price: 12.67,
+        },
+        {
+          value: 'banana 5',
+          name: 'banana 5',
+          price: 12.456,
+        },
+      ],
+    }));
   };
 
   handleListView = () => {
@@ -352,16 +393,16 @@ class Buyer extends React.Component {
               </Grid>
               <Grid item>
                 <p>
-                  <strong>Nome:</strong> Paulo Henrique
+                  <strong>Nome:</strong> {this.state.deliverName}
                 </p>
                 <p>
-                  <strong>Veículo:</strong> Carro
+                  <strong>Veículo:</strong> {this.state.deliverVehicleType}
                 </p>
                 <p>
-                  <strong>Modelo:</strong> Civic
+                  <strong>Modelo:</strong> {this.state.deliverVehicleModel}
                 </p>
                 <p>
-                  <strong>Placa:</strong> DWE-0234
+                  <strong>Placa:</strong> {this.state.deliverVehiclePlate}
                 </p>
               </Grid>
               <Grid item>
@@ -388,13 +429,20 @@ class Buyer extends React.Component {
     } else if (this.state.screenStep === 4) {
       //deliver stored
       const dateAndTime = this.state.selectedDate.split('T');
-      const date = dateAndTime[0].split('-');
-      const time = dateAndTime[1].split(':');
-      const printableDate = `${date[2]}/${date[1]}/${date[0]}`;
-      const printableTime =
-        Number(time[0]) < 22
-          ? `${Number(time[0])}h${time[1]}min - ${Number(time[0]) + 2}h${time[1]}min`
-          : `${Number(time[0])}h${time[1]}min - ${Number(time[0]) - 22}h${time[1]}min`;
+      let date, time, printableDate, printableTime;
+      if (dateAndTime[0]) {
+        date = dateAndTime[0].split('-');
+        time = dateAndTime[1].split(':');
+        printableDate = `${date[2]}/${date[1]}/${date[0]}`;
+        printableTime =
+          Number(time[0]) < 22
+            ? `${Number(time[0])}h${time[1]}min - ${Number(time[0]) + 2}h${time[1]}min`
+            : `${Number(time[0])}h${time[1]}min - ${Number(time[0]) - 22}h${time[1]}min`;
+      } else {
+        printableDate = 'Não selecionado';
+        printableTime = 'Não selecionado';
+      }
+
       console.log(date);
       return (
         <React.Fragment>
@@ -412,10 +460,10 @@ class Buyer extends React.Component {
                   <strong>Horário:</strong> {printableTime}
                 </p>
                 <p>
-                  <strong>Entregador:</strong> Paulo Henrique
+                  <strong>Entregador:</strong> {this.state.deliverName}
                 </p>
                 <p>
-                  <strong>Placa:</strong> DWE-0234
+                  <strong>Placa:</strong> {this.state.deliverVehiclePlate}
                 </p>
               </Grid>
               <Grid item>

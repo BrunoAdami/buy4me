@@ -38,27 +38,27 @@ class Buyer extends React.Component {
         {
           value: 'banana 1',
           name: 'banana 1',
-          price: 12,
+          price: 12.3,
         },
         {
           value: 'banana 2',
           name: 'banana 2',
-          price: 12,
+          price: 12.4,
         },
         {
           value: 'banana 3',
           name: 'banana 3',
-          price: 12,
+          price: 12.5,
         },
         {
           value: 'banana 4',
           name: 'banana 4',
-          price: 12,
+          price: 12.67,
         },
         {
           value: 'banana 5',
           name: 'banana 5',
-          price: 12,
+          price: 12.456,
         },
       ],
     };
@@ -149,6 +149,7 @@ class Buyer extends React.Component {
       ...prevState,
       selectedDate: value,
     }));
+    console.log(this.state.selectedDate);
   };
 
   handleAddItem = () => {
@@ -181,6 +182,11 @@ class Buyer extends React.Component {
   handleGoBackToCreateList = () => {
     this.setState(prevState => ({ ...prevState, screenStep: 1 }));
   };
+
+  toFixed(value, precision) {
+    var power = Math.pow(10, precision || 0);
+    return String(Math.round(value * power) / power);
+  }
 
   renderAdditemsScreen = () => {
     return (
@@ -228,10 +234,10 @@ class Buyer extends React.Component {
 
   renderConfirmationScreen = (itemsValue, shippingValue) => (
     <React.Fragment>
-      <Grid item>Compra: R$ {itemsValue}</Grid>
-      <Grid item>Entrega: R$ {shippingValue}</Grid>
+      <Grid item>Compra: R$ {this.toFixed(itemsValue, 2)}</Grid>
+      <Grid item>Entrega: R$ {this.toFixed(shippingValue, 2)}</Grid>
       <Grid item>
-        <strong>TOTAL: R$ {itemsValue + shippingValue}</strong>
+        <strong>TOTAL: R$ {this.toFixed(itemsValue + shippingValue, 2)}</strong>
       </Grid>
     </React.Fragment>
   );
@@ -263,6 +269,8 @@ class Buyer extends React.Component {
       );
     } else if (this.state.screenStep === 1 && this.state.stepperStep < 3) {
       const steps = this.getSteps();
+      const purchasePrice = this.state.items.reduce((prev, curr) => prev + curr.price * curr.quantity, 0);
+      const deliveryPrice = 5 + 0.05 * purchasePrice;
       return (
         <React.Fragment>
           <Header name={this.props.name} />
@@ -280,7 +288,7 @@ class Buyer extends React.Component {
               {this.state.stepperStep === 0 && this.renderAdditemsScreen()}
               {this.state.stepperStep === 1 && this.renderDateSelectionScreen()}
               {/* a data ainda não está sendo armazenada no estado */}
-              {this.state.stepperStep === 2 && this.renderConfirmationScreen(120.44, 32.2)}
+              {this.state.stepperStep === 2 && this.renderConfirmationScreen(purchasePrice, deliveryPrice)}
               {/* valores da compra ainda não estão vindo do estado */}
               {/* RENDERIZAR OS OUTROS STEPS */}
               <Grid item>
@@ -379,6 +387,15 @@ class Buyer extends React.Component {
       );
     } else if (this.state.screenStep === 4) {
       //deliver stored
+      const dateAndTime = this.state.selectedDate.split('T');
+      const date = dateAndTime[0].split('-');
+      const time = dateAndTime[1].split(':');
+      const printableDate = `${date[2]}/${date[1]}/${date[0]}`;
+      const printableTime =
+        Number(time[0]) < 22
+          ? `${Number(time[0])}h${time[1]}min - ${Number(time[0]) + 2}h${time[1]}min`
+          : `${Number(time[0])}h${time[1]}min - ${Number(time[0]) - 22}h${time[1]}min`;
+      console.log(date);
       return (
         <React.Fragment>
           <Header name={this.props.name} />
@@ -389,10 +406,10 @@ class Buyer extends React.Component {
               </Grid>
               <Grid item>
                 <p>
-                  <strong>Data:</strong> 04/11/2019
+                  <strong>Data:</strong> {printableDate}
                 </p>
                 <p>
-                  <strong>Horário:</strong> 10h - 12h
+                  <strong>Horário:</strong> {printableTime}
                 </p>
                 <p>
                   <strong>Entregador:</strong> Paulo Henrique

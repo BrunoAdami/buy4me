@@ -26,7 +26,8 @@ import Wellcome from '../components/atoms/wellcome';
 import GButton from '../components/atoms/button';
 import PropTypes from 'prop-types';
 
-const url_base = 'http://127.0.0.1:5000/';
+// const url_base = 'http://127.0.0.1:5000/';
+const url_base = 'http://100.24.55.110:5000/';
 class Buyer extends React.Component {
   constructor(props) {
     super(props);
